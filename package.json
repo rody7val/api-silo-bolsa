@@ -1,7 +1,7 @@
 {
-  "name": "default-api",
+  "name": "api-silo-bolsa",
   "version": "1.4.0",
-  "description": "API REST con controladores, modelos y rutas predeterminados.",
+  "description": "API REST del proyecto Secado de granos de Silo Bolsas",
   "scripts": {
     "start": "node ./bin/www"
   },
@@ -12,7 +12,7 @@
   "author": "Rodolfo Valguarnera <rod7val@gmail.com> (https://github.com/rody7val/)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rody7val/default-api.git"
+    "url": "https://github.com/rody7val/api-silo-bolsa.git"
   },
   "license": "MIT",
   "dependencies": {

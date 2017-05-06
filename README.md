@@ -1,3 +1,3 @@
-# default-api
+# api-silo-bolsa
 
-API REST con controladores, modelos y rutas predeterminados.
+API REST del proyecto Secado de granos de Silo Bolsas
