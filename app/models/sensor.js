@@ -2,13 +2,14 @@ var mongoose = require('mongoose');
 var deepPopulate = require('mongoose-deep-populate')(mongoose);
 var Schema = mongoose.Schema;
 
-// Modelo Photo
-var PhotoSchema = new Schema({
+// Modelo Sensor
+var SensorSchema = new Schema({
     luz: Number,
-    board: String,
+    _boardID: String,
+    pin: String,
     created: { type: Date, default: Date.now }
 });
 
-PhotoSchema.plugin(deepPopulate);
+SensorSchema.plugin(deepPopulate);
 
-module.exports = mongoose.model('Photo', PhotoSchema);
+module.exports = mongoose.model('Sensor', SensorSchema);
