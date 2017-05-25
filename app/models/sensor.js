@@ -5,9 +5,9 @@ var Schema = mongoose.Schema;
 // Modelo Sensor
 var SensorSchema = new Schema({
     luz: Number,
-    _boardID: String,
+    placa: String,
     pin: String,
-    created: { type: Date, default: Date.now }
+    created: { type: Number, default: Date.now }
 });
 
 SensorSchema.plugin(deepPopulate);

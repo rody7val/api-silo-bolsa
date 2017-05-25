@@ -1,7 +1,6 @@
 var Sector = require('../models/sector');
 
 exports.create = function (req, res, next) {
-	console.log(req.body.sector)
 	var sector = new Sector(req.body.sector);
 	sector.save(function (err){
         if (err) return res.status(500).json({
@@ -16,7 +15,6 @@ exports.count = function (req, res) {
 	Sector
 	.count({})
 	.exec(function (err, count) {
-		console.log(count)
 		if (err) res.status(500).json({
 			status: 500, 
 			err: err

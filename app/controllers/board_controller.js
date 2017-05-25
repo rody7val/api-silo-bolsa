@@ -4,7 +4,6 @@ exports.count = function (req, res) {
 	Board
 	.count({})
 	.exec(function (err, count) {
-		console.log(count)
 		if (err) res.status(500).json({
 			status: 500, 
 			err: err

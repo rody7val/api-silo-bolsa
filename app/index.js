@@ -6,8 +6,9 @@ var config = require('../config'),
 	cors = require('cors'),
 	favicon = require('serve-favicon'),
 	bodyParser = require('body-parser'),
-	logger = require('morgan');
-
+	logger = require('morgan'),
+	http = require('http');
+	
 // Instancia de nueva aplicación y rutas API
 var app = express(),
 	api = require('../app/routes')(express);
@@ -27,5 +28,13 @@ app.use(bodyParser.json());
 app.use(logger('dev'));
 app.use(api);
 
-// Retornar aplicación.
-module.exports = app;
+// Crear servidor http
+var server = http.createServer(app);
+// Crear socket para graficos en tiempo real
+var io = require('socket.io')(server);
+
+// Exportar aplicación de servidor
+module.exports = {
+	server: server,
+	io: io
+};

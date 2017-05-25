@@ -17,14 +17,14 @@ exports.init_A = function (board, type, pins) {
 	pins.forEach(function (pin, key) {
 		var sensor = new five.Sensor({
 			pin: pin,
-			freq: 60000	// 1 min.
+			freq: 5000	// 1 min = 60000.
 		});
-		// cada 5 seg
+
 		sensor.on('data', function() {
 			// Obtener lecturas
 			var photo = new Sensor({
 				luz: this.value,
-				_boardID: board.id,
+				placa: board.id,
 				pin: this.pin
 			});
 			// Guardar lecturas
