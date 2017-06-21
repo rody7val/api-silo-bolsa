@@ -17,7 +17,7 @@ App.io.on('connection', function(socket) {
 
     // con cada peticion de grafico de un setor
     socket.on('new-chart', function (sector) {
-        // se envian los ultimos segistros de sensores cada x tiempo
+        // se envian los ultimos registros de sensores cada x tiempo
         var ciclo = setInterval(function () {
             sector.devices.map(function (device, index) {
                 Sensor.findOne({

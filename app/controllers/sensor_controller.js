@@ -1,36 +1,24 @@
-var five = require('johnny-five');
 var Sensor = require('../models/sensor');
-var Board = require('../models/board');
 
-exports.init_A = function (board, type, pins) {
-	// Guardar board en la BD.
-	var placa = new Board({
-		_id: board.id,
-		sensors: { 
-			tipo: type,
-			pins: pins
-		}
-	})
-	placa.save();
+exports.save = function (req, res) {
 
-	// Guardar registro de sensores en la BD
-	pins.forEach(function (pin, key) {
-		var sensor = new five.Sensor({
-			pin: pin,
-			freq: 5000	// 1 min = 60000.
-		});
-
-		sensor.on('data', function() {
-			// Obtener lecturas
-			var photo = new Sensor({
-				luz: this.value,
-				placa: board.id,
-				pin: this.pin
-			});
-			// Guardar lecturas
-			photo.save();
-		});
-
+	var temp = new Sensor({
+		temp: req.body.temp,
+		time: req.body.time,
+		vcc: req.body.vcc,
+		placa: req.body.placa,
+		sector: req.body.sector,
+		pin: req.body.pin
 	});
-
+	
+	temp.save(function (err, sensor) {
+		if (err) return res.status(500).json({
+			status: 500, 
+			err: err
+		});
+		res.status(200).json({
+			status: 200, 
+			sensor: sensor
+		});
+	});
 }
