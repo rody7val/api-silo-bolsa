@@ -6,6 +6,7 @@ var Schema = mongoose.Schema;
 // Modelo Sensor
 var SensorSchema = new Schema({
     temp: [Float],
+    prefix: [String],
     time: Number,
     vcc: Number,
     placa: String,

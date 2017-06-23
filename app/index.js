@@ -31,10 +31,11 @@ app.use(api);
 // Crear servidor http
 var server = http.createServer(app);
 // Crear socket para graficos en tiempo real
-var io = require('socket.io')(server);
+// var io = require('socket.io')(server);
 
 // Exportar aplicación de servidor
 module.exports = {
-	server: server,
-	io: io
+	server: server
+	// ,
+	// io: io
 };

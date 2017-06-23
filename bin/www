@@ -1,5 +1,5 @@
-var Sector  = require('../app/models/sector');
-var Sensor  = require('../app/models/sensor');
+// var Sector  = require('../app/models/sector');
+// var Sensor  = require('../app/models/sensor');
 var config  = require('../config');
 var App     = require('../app');
 
@@ -8,34 +8,34 @@ App.server.listen(config.port, function (err){
     console.log('Servidor escuchando en http://localhost:'+config.port);
 });
 
-App.io.on('connection', function(socket) {  
+// App.io.on('connection', function(socket) {  
 
-    Sector.find({}).exec(function (err, sectors) {
-        // enviar todos los sectores
-        socket.emit('sectors', sectors);
-    })
+//     Sector.find({}).exec(function (err, sectors) {
+//         // enviar todos los sectores
+//         socket.emit('sectors', sectors);
+//     })
 
-    // con cada peticion de grafico de un setor
-    socket.on('new-chart', function (sector) {
-        // se envian los ultimos registros de sensores cada x tiempo
-        var ciclo = setInterval(function () {
-            sector.devices.map(function (device, index) {
-                Sensor.findOne({
-                    placa: device.placa,
-                    pin: device.pin
-                })
-                .sort('-created')
-                .exec(function (err, sensor) {
-                    console.log(sensor);
-                    socket.emit('sensors', { 
-                        sector: sector._id,
-                        prefix: device.prefix,
-                        values: [sensor.created, sensor.luz]
-                    });
-                });
-            });
-        }, 5000);   //cada 5 seg
-        setTimeout(function( ) { clearInterval( ciclo ); }, 1500000);   //25 min
-    });
+//     // con cada peticion de grafico de un setor
+//     socket.on('new-chart', function (sector) {
+//         // se envian los ultimos registros de sensores cada x tiempo
+//         var ciclo = setInterval(function () {
+//             sector.devices.map(function (device, index) {
+//                 Sensor.findOne({
+//                     placa: device.placa,
+//                     pin: device.pin
+//                 })
+//                 .sort('-created')
+//                 .exec(function (err, sensor) {
+//                     console.log(sensor);
+//                     socket.emit('sensors', { 
+//                         sector: sector._id,
+//                         prefix: device.prefix,
+//                         values: [sensor.created, sensor.luz]
+//                     });
+//                 });
+//             });
+//         }, 5000);   //cada 5 seg
+//         setTimeout(function( ) { clearInterval( ciclo ); }, 1500000);   //25 min
+//     });
 
-});
+// });
