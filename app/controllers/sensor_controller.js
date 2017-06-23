@@ -7,7 +7,8 @@ exports.save = function (req, res) {
 		vcc: req.body.vcc,
 		placa: req.body.placa,
 		sector: req.body.sector,
-		pin: req.body.pin
+		pin: req.body.pin,
+		prefix: req.body.prefix
 	});
 	
 	temp.save(function (err, sensor) {

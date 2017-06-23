@@ -20,7 +20,8 @@ exports.excel_export = function (req, res) {
       { caption: 'Vcc'    , type: 'number' },
       { caption: 'Placa'  , type: 'string' },
       { caption: 'Sector' , type: 'string' },
-      { caption: 'Pin'    , type: 'number' }
+      { caption: 'Pin'    , type: 'number' },
+      { caption: 'Prefijo', type: 'string' }
     ];
 
     // Filas
@@ -38,6 +39,7 @@ exports.excel_export = function (req, res) {
           sensor.placa,
           sensor.sector,
           sensor.pin,
+          sensor.prefix[key]
         ]);
       });
     });

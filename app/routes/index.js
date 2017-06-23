@@ -1,6 +1,4 @@
 // Dependencias Arduino
-// var five    = require('johnny-five');
-// var boards  = new five.Boards(['A']);
 
 // Controladores Globales del API
 var Auth    = require('../controllers/auth_controller');
