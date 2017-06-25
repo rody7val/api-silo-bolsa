@@ -1,6 +1,37 @@
 var Sensor  = require('../models/sensor');
 var moment  = require('moment');
 
+exports.check_export = function (req, res) {
+  var nodeExcel = require('excel-export');
+  var inputUnix_Init = req.params.date;
+  var inputUnix_End = moment.unix(req.params.date).add(1, 'day').subtract(1, 'minutes').unix();
+  var hoy = moment.unix(req.params.date).format('DD-MM-YYYY');
+
+  Sensor.find({
+    unix: {
+      $gte: inputUnix_Init * 1000,
+      $lt: inputUnix_End * 1000
+    }
+  }).exec(function (err, sensors) {
+
+    if (err) return res.status(500).json({
+      status: 500, 
+      err: err.errors
+    })
+
+    else if (!sensors.length) return res.status(500).json({
+      status: 500, 
+      message: 'No se encontraron registros para el día ' + hoy
+    })
+
+    res.status(200).json({
+      status: 200,
+      sensors: sensors
+    });
+
+  });
+}
+
 exports.excel_export = function (req, res) {
 	var nodeExcel = require('excel-export');
   var inputUnix_Init = req.params.date;

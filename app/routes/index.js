@@ -41,6 +41,7 @@ module.exports = function (express) {
 
     // Excel exports
     api.get('/excel/:date', Excel.excel_export);
+    api.get('/excel/check/:date', Excel.check_export);
 
     // Restricción de rutas
     api.get('*', General.restrict);
