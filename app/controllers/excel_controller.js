@@ -3,11 +3,16 @@ var moment  = require('moment');
 
 exports.excel_export = function (req, res) {
 	var nodeExcel = require('excel-export');
-  console.log(req.params.date);
+  var inputUnix_Init = req.params.date;
+  var inputUnix_End = moment.unix(req.params.date).add(1, 'day').subtract(1, 'minutes').unix();
+  var hoy = moment.unix(req.params.date).format('DD-MM-YYYY');
 
-  Sensor
-  .find({ created: { $gt: new Date(req.params.date) } })
-  .exec(function (err, sensors) {
+  Sensor.find({
+    unix: {
+      $gte: inputUnix_Init * 1000,
+      $lt: inputUnix_End * 1000
+    }
+  }).exec(function (err, sensors) {
 
     var conf = {};
     conf.name = 'BASE_DE_DATOS';
@@ -21,25 +26,26 @@ exports.excel_export = function (req, res) {
       { caption: 'Placa'  , type: 'string' },
       { caption: 'Sector' , type: 'string' },
       { caption: 'Pin'    , type: 'number' },
-      { caption: 'Prefijo', type: 'string' }
+      { caption: 'Prefijo', type: 'string' },
     ];
 
     // Filas
     conf.rows = [];
     // Por cada registro en la base de datos
-    sensors.forEach(function (sensor) {
+    sensors.forEach(function (sensor, key) {
+      var _key = key;
       // y por cada registro de temperatura
       sensor.temp.forEach(function (temp, key) {
         // crear nueva fila
         conf.rows.push([
-          moment(sensor.created).subtract(10, 'days').calendar(),
-          moment(sensor.created).format('LT'),
+          moment.unix( sensor.unix / 1000 ).format('DD-MM-YYYY'),
+          moment.unix( sensor.unix / 1000 ).format('LT'),
           sensor.temp[key],
           parseFloat( Number(sensor.vcc / 10000).toFixed(2) ),
           sensor.placa,
           sensor.sector,
           sensor.pin,
-          sensor.prefix[key]
+          sensor.prefix[key] || "x"+key
         ]);
       });
     });
@@ -47,7 +53,7 @@ exports.excel_export = function (req, res) {
     // Exportar archivo binario *.xlsx
     var result = nodeExcel.execute(conf);
     res.setHeader('Content-Type', 'application/vnd.openxmlformats');
-    res.setHeader('Content-Disposition', 'attachment; filename=' + 'Temperaturas_' + moment(req.params.date).format('DD-MM-YYYY') +'.xlsx');
+    res.setHeader('Content-Disposition', 'attachment; filename=' + 'Temperaturas_' + hoy +'.xlsx');
     res.end(result, 'binary');
   });
 }
