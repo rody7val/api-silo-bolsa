@@ -1,0 +1,19 @@
+[Unit]
+Description=API REST del proyecto Secado de granos de Silo Bolsas
+
+[Service]
+ExecStart=/usr/bin/npm start
+
+Restart=always
+ # Restart service after 10 seconds if node service crashes
+ RestartSec=10
+ # Output to syslog
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=api-silo-bolsa
+#User=<alternate user>
+#Group=<alternate group>
+# Environment=NODE_ENV=production PORT=1337
+
+[Install]
+WantedBy=multi-user.target

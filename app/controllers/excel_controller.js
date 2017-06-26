@@ -2,7 +2,6 @@ var Sensor  = require('../models/sensor');
 var moment  = require('moment');
 
 exports.check_export = function (req, res) {
-  var nodeExcel = require('excel-export');
   var inputUnix_Init = req.params.date;
   var inputUnix_End = moment.unix(req.params.date).add(1, 'day').subtract(1, 'minutes').unix();
   var hoy = moment.unix(req.params.date).format('DD-MM-YYYY');
@@ -44,6 +43,8 @@ exports.excel_export = function (req, res) {
       $lt: inputUnix_End * 1000
     }
   }).exec(function (err, sensors) {
+
+    if (err || !sensors || !sensors.length) return;
 
     var conf = {};
     conf.name = 'BASE_DE_DATOS';
