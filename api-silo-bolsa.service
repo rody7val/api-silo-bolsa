@@ -2,7 +2,8 @@
 Description=API REST del proyecto Secado de granos de Silo Bolsas
 
 [Service]
-ExecStart=TZ='America/Argentina/Buenos_Aires'; export TZ && /usr/bin/node /home/pi/apps/api-silo-bolsa/bin/www
+ExecStart=/usr/bin/node /home/pi/apps/api-silo-bolsa/bin/www
+ExecStartPost=TZ='America/Argentina/Buenos_Aires'; export TZ
 
 Restart=always
  # Restart service after 10 seconds if node service crashes
