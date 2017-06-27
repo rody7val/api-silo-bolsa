@@ -21,17 +21,17 @@ exports.load = function(req, res, next, userId) {
  * @apiVersion 0.1.0
  *
  * @apiSuccess {Number} status Código de estado HTTP.
- * @apiSuccess {Object} users Arreglo de todos los usuarios.
+ * @apiSuccess {Object[]} users Arreglo de todos los usuarios.
  *
  * @apiSuccessExample Respuesta de ejemplo con dos usuarios en la Base de Datos:
  * {
- *     "status": 200,
- *     "users": [{
- *         "_id":"5876c58152788f0a046d3a50",
- *         "email":"rodolfo@gmail.com"
+ *     status: 200,
+ *     users: [{
+ *         _id:"5876c58152788f0a046d3a50",
+ *         email:"rodolfo@gmail.com"
  *     },{
- *         "_id":"5876c58152788f0a046d3c69",
- *         "email":"nicolas@gmail.com"
+ *         _id:"5876c58152788f0a046d3c69",
+ *         email:"nicolas@gmail.com"
  *     }]
  *}
  */

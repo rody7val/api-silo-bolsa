@@ -12,20 +12,17 @@ var service = require('../service')
  *
  * @apiSuccess {Number} status Código de estado HTTP.
  * @apiSuccess {String} token Firma cifrada que permite identificar un usuario.
+ * @apiSuccess {Object} user Objeto Usuario.
  *
  * @apiSuccessExample Respuesta de ejemplo de exito al crear un usuario.
  * {
- *     "status": 200,
- *     "token": "eyJ0eXAiOiJKV1GUzI1NXAiOiJXAiOiJiJ9.eyJzdWIXAiOiJiOiGMTUyNzg4ZXAiOiJjBhMDQ..."
- * }
- *
- * @apiError {Number} status Código de estado HTTP.
- * @apiError {String} err Información del error.
- *
- * @apiErrorExample Respuesta de ejemplo de error al crear un usuario.
- * {
- *     "status": 500,
- *     "err": "El 'Email' es incorrecto."
+ *     status: 200,
+ *     token: "eyJ0eXAiOiJKV1GUzI1NXAiOiJXAiOiJiJ9.eyJzdWIXAiOiJiOiGMTUyNzg4ZXAiOiJjBhMDQ...",
+ *     user: {
+ *          name: "User Name",
+ *          email: "user@email.com",
+ *          password: "zI1NXAiOiJXAiOiJiJ9",
+ *     }
  * }
  *
  */
@@ -65,17 +62,38 @@ exports.emailSignup = function(req, res) {
  *
  * @apiSuccessExample Respuesta de ejemplo de exito al iniciar sesión.
  * {
- *     "status": 200,
- *     "token": "eyJ0eXAiOiJKV1GUzI1NXAiOiJXAiOiJiJ9.eyJzdWIXAiOiJiOiGMTUyNzg4ZXAiOiJjBhMDQ..."
+ *     status: 200,
+ *     token: "eyJ0eXAiOiJKV1GUzI1NXAiOiJXAiOiJiJ9.eyJzdWIXAiOiJiOiGMTUyNzg4ZXAiOiJjBhMDQ...",
+ *     user: {
+ *          name: "User Name",
+ *          email: "user@email.com",
+ *          password: "zI1NXAiOiJXAiOiJiJ9",
+ *     }
  * }
- *
+ */
+
+/**
+ * @apiDefine UserEmailNotFound
  * @apiError {Number} status Código de estado HTTP.
  * @apiError {String} err Información del error.
  *
  * @apiErrorExample Respuesta de ejemplo de error al iniciar sesión.
  * {
- *     "status": 500,
- *     "err": "Email incorrecto"
+ *     status: 401,
+ *     err: "Email incorrecto"
+ * }
+ *
+ */
+
+/**
+ * @apiDefine UserPasswordNotFound
+ * @apiError {Number} status Código de estado HTTP.
+ * @apiError {String} err Información del error.
+ *
+ * @apiErrorExample Respuesta de ejemplo de error al iniciar sesión.
+ * {
+ *     status: 401,
+ *     err: "Contraseña incorrecta"
  * }
  *
  */

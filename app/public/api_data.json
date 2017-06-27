@@ -1,86 +1,9 @@
 [
   {
     "type": "get",
-    "url": "/notice/:noticeId",
-    "title": "Obtener una Noticia",
-    "group": "Notices",
-    "version": "0.1.0",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "noticeId",
-            "description": "<p>Identificador de la noticia.</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "status",
-            "description": "<p>Código de estado HTTP.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Object",
-            "optional": false,
-            "field": "notices",
-            "description": "<p>Objeto instancia de la noticia.</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Respuesta de ejemplo:",
-          "content": "{\n    \"status\": 200,\n    \"notice\": {\n        \"title\": \"Incentivando el tenis\",\n        \"content\": \"Próximamente la nueva cancha de tenis del club tendrá profesor. En breves ...\",\n        \"category\": \"DEPORTES\",\n        \"status\": false,\n        \"url_img\": \"https://i.imgur.com/WiaAYKn.gif\",\n        \"_id\": \"58730624f210341390a79fd4\",\n        \"created\": \"2017-01-19T02:31:13.000Z\"\n    }\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "Number",
-            "optional": false,
-            "field": "status",
-            "description": "<p>Código de estado HTTP.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "String",
-            "optional": false,
-            "field": "err",
-            "description": "<p>Información del error.</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Respuesta de ejemplo de error al obtener una noticia.",
-          "content": "{\n    \"status\": 500,\n    \"err\": \"No existe la noticia con _id = 58730624f210341391a79fd4\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "app/controllers/notice_controller.js",
-    "groupTitle": "Notices",
-    "name": "GetNoticeNoticeid"
-  },
-  {
-    "type": "get",
-    "url": "/notices",
-    "title": "Obtener Noticias",
-    "group": "Notices",
+    "url": "/sensors",
+    "title": "Obtener Sensores",
+    "group": "Sensor",
     "version": "0.1.0",
     "success": {
       "fields": {
@@ -94,68 +17,96 @@
           },
           {
             "group": "Success 200",
-            "type": "Object",
+            "type": "Object[]",
             "optional": false,
-            "field": "notices",
-            "description": "<p>Arreglo de todas las noticia.</p>"
+            "field": "users",
+            "description": "<p>Arreglo de todos los sensores.</p>"
           }
         ]
       },
       "examples": [
         {
-          "title": "Respuesta de ejemplo con dos noticias en la Base de Datos:",
-          "content": "{\n    \"status\": 200,\n    \"notices\": [{\n        \"title\": \"Incentivando el tenis\",\n        \"content\": \"Próximamente la nueva cancha de tenis del club tendrá profesor. En breves ...\",\n        \"category\": \"DEPORTES\",\n        \"status\": false,\n        \"url_img\": \"https://i.imgur.com/WiaAYKn.gif\",\n        \"_id\": \"58730624f210341390a79fd4\",\n        \"created\": \"2017-01-19T02:31:13.000Z\"\n    },{\n        \"title\": \"Campeonato de Bochas\",\n        \"content\": \"El trío de bochas del Club Atlético Huracán de Chillar está participando del ...\",\n        \"category\": \"DEPORTES\",\n        \"status\": true,\n        \"url_img\": \"https://i.imgur.com/WiaAYKn.gif\",\n        \"_id\": \"58730624f210341390a79fd5\",\n        \"created\": \"2017-01-09T02:31:13.000Z\"\n    }]\n}",
+          "title": "Respuesta de ejemplo con dos sensores en la Base de Datos:",
+          "content": "{\n    status: 200,\n    sensors: [{\n       _id: \"5941a7b29c046c155c50fed0\",\n       temp: [18.6, 17.31],\n       prefix: [\"E01\", \"E02\"],\n       time: 543239,\n       vcc: 65535,\n       placa: \"A\",\n       sector: \"eje-1\",\n       pin: 2,\n       unix: 1497474994181.0,\n       created: \"2017-06-14T21:16:34.181Z\"\n    },{\n       _id: \"5941a7b29c046c155c50fed1\",\n       temp: [18.43, 17.4],\n       prefix: [\"E01\", \"E02\"],\n       time: 593239,\n       vcc: 65435,\n       placa: \"A\",\n       sector: \"eje-1\",\n       pin: 2,\n       unix: 1497474998356.0,\n       created: \"2017-06-14T23:34:15.181Z\"\n    }]\n}",
           "type": "json"
         }
       ]
     },
-    "filename": "app/controllers/notice_controller.js",
-    "groupTitle": "Notices",
-    "name": "GetNotices"
+    "filename": "controllers/sensor_controller.js",
+    "groupTitle": "Sensor",
+    "name": "GetSensors"
   },
   {
     "type": "post",
-    "url": "/notices",
-    "title": "Crear Noticia",
-    "group": "Notices",
+    "url": "/sensors",
+    "title": "Crear Sensor",
+    "group": "Sensor",
     "version": "0.1.0",
     "parameter": {
       "fields": {
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "Float[]",
             "optional": false,
-            "field": "title",
-            "description": "<p>Titulo de la noticia.</p>"
+            "field": "temp",
+            "description": "<p>Temperaturas registradas.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String[]",
+            "optional": false,
+            "field": "prefix",
+            "description": "<p>Prefijo del identificador crc8 de los sensores DS18B20.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "time",
+            "description": "<p>Tiempo en milisegundos del registro de la temperatura desde la placa ESP8266.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "vcc",
+            "description": "<p>Voltje en voltios del registro de la temperatura desde la placa ESP8266.</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "content",
-            "description": "<p>Contenido pricipal.</p>"
+            "field": "placa",
+            "description": "<p>Nombre de la placa ESP8266.</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "category",
-            "description": "<p>Categoria asociada.</p>"
+            "field": "sector",
+            "description": "<p>Nombre del sector.</p>"
           },
           {
             "group": "Parameter",
-            "type": "Boolean",
+            "type": "Number",
             "optional": false,
-            "field": "status",
-            "description": "<p>Estado de moderación.</p>"
+            "field": "pin",
+            "description": "<p>Numero del pin al cual estan conectados los sensores.</p>"
           },
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "Number",
             "optional": false,
-            "field": "url_img",
-            "description": "<p>Dirección de la imagen.</p>"
+            "field": "unix",
+            "description": "<p>Tiempo en formato unix del momento en que se guarda el registro en la base de datos.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Date",
+            "optional": false,
+            "field": "created",
+            "description": "<p>Tiempo en formato date del momento en que se guarda el registro en la base de datos.</p>"
           }
         ]
       }
@@ -174,22 +125,59 @@
             "group": "Success 200",
             "type": "Object",
             "optional": false,
-            "field": "notice",
-            "description": "<p>Instancia de la noticia creada.</p>"
+            "field": "sensor",
+            "description": "<p>Objeto Sensor.</p>"
           }
         ]
       },
       "examples": [
         {
-          "title": "Respuesta de ejemplo al crear una noticia en la Base de Datos:",
-          "content": "{\n    \"status\": 200,\n    \"notice\": {\n        \"title\": \"Incentivando el tenis\",\n        \"content\": \"Próximamente la nueva cancha de tenis del club tendrá profesor. En breves ...\",\n        \"category\": \"DEPORTES\",\n        \"status\": false,\n        \"url_img\": \"https://i.imgur.com/WiaAYKn.gif\",\n        \"_id\": \"58730624f210341390a79fd4\",\n        \"created\": \"2017-01-19T02:31:13.000Z\"\n    }\n}",
+          "title": "Respuesta de ejemplo de exito al crear un sensor.",
+          "content": "{\n    status: 200,\n    sensor: {\n       _id: \"5941a7b29c046c155c50fed0\",\n       temp: [18.6, 17.3],\n       prefix: [\"E01\", \"E02\"],\n       time: 543239,\n       vcc: 65535,\n       placa: \"A\",\n       sector: \"eje-1\",\n       pin: 2,\n       unix: 1497474994181.0,\n       created: \"2017-06-14T21:16:34.181Z\"\n    }\n}",
           "type": "json"
         }
       ]
     },
-    "filename": "app/controllers/notice_controller.js",
-    "groupTitle": "Notices",
-    "name": "PostNotices"
+    "filename": "controllers/sensor_controller.js",
+    "groupTitle": "Sensor",
+    "name": "PostSensors"
+  },
+  {
+    "type": "get",
+    "url": "/users",
+    "title": "Obtener Usuarios",
+    "group": "Users",
+    "version": "0.1.0",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>Código de estado HTTP.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "users",
+            "description": "<p>Arreglo de todos los usuarios.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Respuesta de ejemplo con dos usuarios en la Base de Datos:",
+          "content": "{\n    status: 200,\n    users: [{\n        _id:\"5876c58152788f0a046d3a50\",\n        email:\"rodolfo@gmail.com\"\n    },{\n        _id:\"5876c58152788f0a046d3c69\",\n        email:\"nicolas@gmail.com\"\n    }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "controllers/user_controller.js",
+    "groupTitle": "Users",
+    "name": "GetUsers"
   },
   {
     "type": "post",
@@ -239,39 +227,12 @@
       "examples": [
         {
           "title": "Respuesta de ejemplo de exito al iniciar sesión.",
-          "content": "{\n    \"status\": 200,\n    \"token\": \"eyJ0eXAiOiJKV1GUzI1NXAiOiJXAiOiJiJ9.eyJzdWIXAiOiJiOiGMTUyNzg4ZXAiOiJjBhMDQ...\"\n}",
+          "content": "{\n    status: 200,\n    token: \"eyJ0eXAiOiJKV1GUzI1NXAiOiJXAiOiJiJ9.eyJzdWIXAiOiJiOiGMTUyNzg4ZXAiOiJjBhMDQ...\",\n    user: {\n         name: \"User Name\",\n         email: \"user@email.com\",\n         password: \"zI1NXAiOiJXAiOiJiJ9\",\n    }\n}",
           "type": "json"
         }
       ]
     },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "Number",
-            "optional": false,
-            "field": "status",
-            "description": "<p>Código de estado HTTP.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "String",
-            "optional": false,
-            "field": "err",
-            "description": "<p>Información del error.</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Respuesta de ejemplo de error al iniciar sesión.",
-          "content": "{\n    \"status\": 500,\n    \"err\": \"Email incorrecto\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "app/controllers/auth_controller.js",
+    "filename": "controllers/auth_controller.js",
     "groupTitle": "Users",
     "name": "PostAuthLogin"
   },
@@ -317,45 +278,25 @@
             "optional": false,
             "field": "token",
             "description": "<p>Firma cifrada que permite identificar un usuario.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "user",
+            "description": "<p>Objeto Usuario.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Respuesta de ejemplo de exito al crear un usuario.",
-          "content": "{\n    \"status\": 200,\n    \"token\": \"eyJ0eXAiOiJKV1GUzI1NXAiOiJXAiOiJiJ9.eyJzdWIXAiOiJiOiGMTUyNzg4ZXAiOiJjBhMDQ...\"\n}",
+          "content": "{\n    status: 200,\n    token: \"eyJ0eXAiOiJKV1GUzI1NXAiOiJXAiOiJiJ9.eyJzdWIXAiOiJiOiGMTUyNzg4ZXAiOiJjBhMDQ...\",\n    user: {\n         name: \"User Name\",\n         email: \"user@email.com\",\n         password: \"zI1NXAiOiJXAiOiJiJ9\",\n    }\n}",
           "type": "json"
         }
       ]
     },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "Number",
-            "optional": false,
-            "field": "status",
-            "description": "<p>Código de estado HTTP.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "String",
-            "optional": false,
-            "field": "err",
-            "description": "<p>Información del error.</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Respuesta de ejemplo de error al crear un usuario.",
-          "content": "{\n    \"status\": 500,\n    \"err\": \"El 'Email' es incorrecto.\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "app/controllers/auth_controller.js",
+    "filename": "controllers/auth_controller.js",
     "groupTitle": "Users",
     "name": "PostAuthSignup"
   }
