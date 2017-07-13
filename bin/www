@@ -1,7 +1,12 @@
-var config  = require('../config');
-var App     = require('../app');
+var config = require('../config');
+var App = require('../app');
+var ip = require('ip');
 
-App.server.listen(config.port, function (err){  
+App.server.listen(config.port, function (err) {
     if (err) return console.log(err);
-    console.log('Servidor escuchando en http://localhost:'+config.port);
+	var protocol = 'http://';
+	console.log('####');
+	console.log(`Servidor local: ${protocol}localhost:${config.port}`);
+	console.log(`Servidor en tu red: ${protocol}${ip.address()}:${config.port}`);
+	console.log('####');
 });

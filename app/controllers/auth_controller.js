@@ -59,6 +59,7 @@ exports.emailSignup = function(req, res) {
  *
  * @apiSuccess {Number} status Código de estado HTTP.
  * @apiSuccess {String} token Firma cifrada que permite identificar un usuario.
+ * @apiSuccess {Object} user Objeto Usuario.
  *
  * @apiSuccessExample Respuesta de ejemplo de exito al iniciar sesión.
  * {
