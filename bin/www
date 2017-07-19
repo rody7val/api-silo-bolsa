@@ -17,7 +17,7 @@ App.io.on('connection', function (socket) {
 		},
 		read: function() {
 			this.sensor.data = sensorLib.read(this.sensor.type, this.sensor.pin);
-			console.log(`${this.sensor.name}: ${data.temperature.toFixed(1)}°C, ${data.humidity.toFixed(1)}%`);
+			console.log(`${this.sensor.name}: ${this.sensor.data.temperature.toFixed(1)}°C, ${this.sensor.data.humidity.toFixed(1)}%`);
 			// enviar temperatura y humedad exterior
 			socket.emit('dht22', this.sensor);
 
