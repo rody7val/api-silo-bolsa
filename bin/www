@@ -2,6 +2,7 @@ var sensorLib = require('node-dht-sensor');
 var config = require('../config');
 var App = require('../app');
 var ip = require('ip');
+var moment = require('moment');
 
 // socket
 App.io.on('connection', function (socket) {
@@ -10,18 +11,19 @@ App.io.on('connection', function (socket) {
 		sensor: {
 			name: "Exterior",
 			type: 22,
-			pin: 4
+			pin: 4,
+			data: {},
+			time: moment().unix()
 		},
 		read: function() {
-			var data = sensorLib.read(this.sensor.type, this.sensor.pin);
+			this.sensor.data = sensorLib.read(this.sensor.type, this.sensor.pin);
 			console.log(`${this.sensor.name}: ${data.temperature.toFixed(1)}°C, ${data.humidity.toFixed(1)}%`);
 			// enviar temperatura y humedad exterior
-			this.sensor.data = data;
 			socket.emit('dht22', this.sensor);
 
 			timeOut = setTimeout(function() {
 				sensorObj.read();
-			}, 2000);
+			}, 5000);
 		}
 	};
 
