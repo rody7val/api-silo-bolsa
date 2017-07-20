@@ -37,8 +37,8 @@ App.io.on('connection', function (socket) {
 
 	socket.on('stop-dht22', function() {
 		console.log('stop!')
-		clearTimeout(timeOut);
 		console.log(timeOut)
+		clearTimeout(timeOut);
 	});
 
 });
