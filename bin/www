@@ -15,6 +15,7 @@ App.io.on('connection', function (socket) {
 			data: {},
 			time: null,
 		},
+
 		read: function() {
 			this.sensor.data = sensorLib.read(this.sensor.type, this.sensor.pin);
 			this.sensor.time = moment().unix();
@@ -26,26 +27,32 @@ App.io.on('connection', function (socket) {
 			timeOut = setTimeout(function() {
 				sensorObj.read();
 			}, 5000);
+		},
+
+		start: function(timeOut) {
+			socket.on('start-dht22', function() {
+				console.log('start!')
+				sensorObj.read();
+				console.log(timeOut)
+			});
+		},
+
+		stop: function(timeOut) {
+			socket.on('stop-dht22', function() {
+				console.log('stop!')
+				clearTimeout(timeOut);
+				console.log(timeOut._destroyed)
+			});
 		}
 	};
 
-	socket.on('start-dht22', function() {
-		console.log('start!')
-		sensorObj.read();
-		console.log(timeOut)
-	});
-
-	socket.on('stop-dht22', function() {
-		console.log('stop!')
-		console.log(timeOut)
-		clearTimeout(timeOut);
-	});
-
+	sensorObj.start(timeOut);
+	sensorObj.stop(timeOut);
 });
 
 // server
 App.server.listen(config.port, function (err) {
-    if (err) return console.log(err);
+  if (err) return console.log(err);
 	var protocol = 'http://';
 	console.log('####');
 	console.log(`Servidor local: ${protocol}localhost:${config.port}`);
