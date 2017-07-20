@@ -8,7 +8,7 @@ exports.createToken = function(user) {
 	var payload = {
 		sub: user._id,
 		iat: moment().unix(),
-		exp: moment().add(1, "hours").unix(),
+		exp: moment().add(2, "hours").unix(),
 	};
 	return jwt.encode(payload, config.TOKEN_SECRET);
 };

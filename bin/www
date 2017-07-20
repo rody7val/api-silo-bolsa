@@ -18,10 +18,7 @@ App.io.on('connection', function (socket) {
 		read: function() {
 			this.sensor.data = sensorLib.read(this.sensor.type, this.sensor.pin);
 			this.sensor.time = moment().unix();
-			console.log(`${this.sensor.name}: 
-				${this.sensor.data.temperature.toFixed(1)}°C,
-				${this.sensor.data.humidity.toFixed(1)}%,
-				${moment.unix(this.sensor.time).format('LT')}
+			console.log(`${this.sensor.name}: ${this.sensor.data.temperature.toFixed(1)}°C, ${this.sensor.data.humidity.toFixed(1)}%, ${moment.unix(this.sensor.time).format('h:mm:ss')}
 			`);
 			// enviar temperatura y humedad exterior
 			socket.emit('dht22', this.sensor);
@@ -32,8 +29,17 @@ App.io.on('connection', function (socket) {
 		}
 	};
 
-	socket.on('start-dht22', function() { sensorObj.read() });
-	socket.on('stop-dht22', function() { clearTimeout(timeOut) });
+	socket.on('start-dht22', function() {
+		console.log('start!')
+		sensorObj.read();
+		console.log(timeOut)
+	});
+
+	socket.on('stop-dht22', function() {
+		console.log('stop!')
+		clearTimeout(timeOut);
+		console.log(timeOut)
+	});
 
 });
 
