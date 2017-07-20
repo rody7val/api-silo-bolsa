@@ -27,6 +27,7 @@ App.io.on('connection', function (socket) {
 
 			this.timeOut = setTimeout(function() {
 				sensorObj.read();
+				console.log(typeof this.timeOut._onTimeout)
 			}, 5000);
 		},
 
@@ -34,15 +35,15 @@ App.io.on('connection', function (socket) {
 			socket.on('start-dht22', function() {
 				console.log('start!')
 				sensorObj.read();
-				console.log(this.timeOut)
+				console.log(typeof this.timeOut._onTimeout)
 			});
 		},
 
-		stop: function(timeOut) {
+		stop: function() {
 			socket.on('stop-dht22', function() {
 				console.log('stop!')
 				clearTimeout(this.timeOut);
-				console.log(this.timeOut)
+				console.log(typeof this.timeOut._onTimeout)
 			});
 		}
 	};
