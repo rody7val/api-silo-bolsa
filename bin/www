@@ -19,6 +19,13 @@ App.io.sockets.on('connection', function (socket) {
 			time: null,
 		},
 
+		disconnect: function(sk) {
+    	console.log('disconnect!');
+    	var i = allClients.indexOf(sk);
+    	clearTimeout(allClients[i].timeOut)
+			delete allClients[i];
+		},
+
 		read: function() {
 			this.sensor.data = sensorLib.read(this.sensor.type, this.sensor.pin);
 			this.sensor.time = moment().unix();
@@ -36,17 +43,19 @@ App.io.sockets.on('connection', function (socket) {
 				console.log('start!')
 				sensorObj.read();
 			});
-		}
+		},
+
+		stop: function() {
+			this.disconnect(socket);
+		}, 
 	};
 
 	socket.on('disconnect', function() {
-    console.log('disconnect!');
-    var i = allClients.indexOf(socket);
-    clearTimeout(allClients[i].timeOut)
-		delete allClients[i];
+		sensorObj.disconnect(socket);
   });
 
 	sensorObj.start();
+	sensorObj.stop();
 });
 
 // server
