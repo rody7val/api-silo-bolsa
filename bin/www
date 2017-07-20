@@ -27,23 +27,25 @@ App.io.on('connection', function (socket) {
 
 			this.timeOut = setTimeout(function() {
 				sensorObj.read();
-				console.log(typeof this.timeOut._onTimeout)
+				console.log(typeof this.timeOut)
 			}, 5000);
 		},
 
 		start: function() {
+			var self = this;
 			socket.on('start-dht22', function() {
 				console.log('start!')
 				sensorObj.read();
-				console.log(typeof this.timeOut._onTimeout)
+				console.log(typeof self.timeOut)
 			});
 		},
 
 		stop: function() {
+			var self = this;
 			socket.on('stop-dht22', function() {
 				console.log('stop!')
-				clearTimeout(this.timeOut);
-				console.log(typeof this.timeOut._onTimeout)
+				clearTimeout(self.timeOut);
+				console.log(typeof self.timeOut)
 			});
 		}
 	};
