@@ -37,17 +37,18 @@ var Sensor = require('../models/sensor');
  *
  */
 exports.save = function (req, res) {
-	var temp = new Sensor({
+	var snsr = new Sensor({
 		temp: req.body.temp,
-		time: req.body.time,
-		vcc: req.body.vcc,
+		hr: req.body.hr || 0,
+		time: req.body.time || 0,
+		vcc: req.body.vcc || 0,
 		placa: req.body.placa,
 		sector: req.body.sector,
 		pin: req.body.pin,
 		prefix: req.body.prefix
 	});
 	
-	temp.save(function (err, sensor) {
+	snsr.save(function (err, sensor) {
 		if (err) return res.status(500).json({
 			status: 500, 
 			err: err

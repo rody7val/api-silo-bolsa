@@ -50,7 +50,7 @@ App.io.sockets.on('connection', function (socket) {
 				console.log('stop!')
 				this.disconnect(socket);
 			});
-		}, 
+		}
 	};
 
 	socket.on('disconnect', function() {
