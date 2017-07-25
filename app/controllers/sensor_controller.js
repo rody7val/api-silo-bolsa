@@ -38,14 +38,14 @@ var Sensor = require('../models/sensor');
  */
 exports.save = function (req, res) {
 	var snsr = new Sensor({
-		temp: req.body.temp,
-		hr: req.body.hr || 0,
+		temp: req.body.temp || [],
+		hr: req.body.hr || [],
 		time: req.body.time || 0,
 		vcc: req.body.vcc || 0,
-		placa: req.body.placa,
-		sector: req.body.sector,
-		pin: req.body.pin,
-		prefix: req.body.prefix
+		placa: req.body.placa || '',
+		sector: req.body.sector || '',
+		pin: req.body.pin || '',
+		prefix: req.body.prefix || ''
 	});
 	
 	snsr.save(function (err, sensor) {
