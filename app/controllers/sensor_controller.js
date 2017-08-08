@@ -41,7 +41,6 @@ exports.save = function (req, res) {
 	var snsr = new Sensor({
 		temp: req.body.temp || [],
 		hr: req.body.hr || [],
-		vcc: req.body.vcc || 0,
 		placa: req.body.placa || '',
 		sector: req.body.sector || '',
 		pin: req.body.pin || '',
@@ -62,8 +61,7 @@ exports.save = function (req, res) {
 
 
 exports.save22 = function (sr) {
-	console.log(sr);
-	
+
 	var sensor = new Sensor({
 		temp: [sr.data.temperature] || [],
 		hr: [sr.data.humidity] || [],
@@ -73,7 +71,7 @@ exports.save22 = function (sr) {
 		prefix: sr.prefix || ''
 	});
 	
-	sensor.save(function (err, sensor) { console.log(err ? err : sensor) });
+	sensor.save(function (err, sensor) { console.log(err ? err : sensor._id) });
 }
 /**
  * @api {get} /sensors Obtener Sensores

@@ -12,7 +12,6 @@ var SensorSchema = new Schema({
     placa: String,
     prefix: [String],
     pin: Number,
-    vcc: Number,
     unix: { type: Number, default: Date.now },
     created: { type: Date, default: Date.now },
 });

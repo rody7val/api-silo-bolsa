@@ -59,8 +59,7 @@ exports.excel_export = function (req, res) {
       { caption: 'Sector' , type: 'string' },
       { caption: 'Placa'  , type: 'string' },
       { caption: 'Prefijo', type: 'string' },
-      { caption: 'Pin'    , type: 'number' },
-      { caption: 'Vcc'    , type: 'number' },
+      { caption: 'Pin'    , type: 'number' }
     ];
 
     // Filas
@@ -80,8 +79,7 @@ exports.excel_export = function (req, res) {
           sensor.sector,  // Sector
           sensor.placa, // Placa
           sensor.prefix[key] || "x"+key, // Prefijo
-          sensor.pin, // Pin
-          parseFloat( Number(sensor.vcc / 10000).toFixed(2) )  // Vcc
+          sensor.pin // Pin
         ]);
       });
     });
