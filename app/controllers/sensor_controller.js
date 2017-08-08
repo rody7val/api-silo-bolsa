@@ -62,6 +62,8 @@ exports.save = function (req, res) {
 
 
 exports.save22 = function (sr) {
+	console.log(sr);
+	
 	var sensor = new Sensor({
 		temp: [sr.data.temperature] || [],
 		hr: [sr.data.humidity] || [],

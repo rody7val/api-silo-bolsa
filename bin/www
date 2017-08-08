@@ -31,15 +31,17 @@ App.io.sockets.on('connection', function (socket) {
 		},
 
 		read: function() {
-			this.sensor.data = sensorLib.read(this.sensor.type, this.sensor.pin);
-			this.sensor.time = moment().unix();
-			console.log(`${this.sensor.name}: ${this.sensor.data.temperature.toFixed(1)}°C, ${this.sensor.data.humidity.toFixed(1)}%, ${moment.unix(this.sensor.time).format('h:mm:ss')}`);
+			var self = this;
+
+			self.data = sensorLib.read(self.type, self.pin);
+			self.time = moment().unix();
+			console.log(`${self.name}: ${self.data.temperature.toFixed(1)}°C, ${self.data.humidity.toFixed(1)}%, ${moment.unix(self.time).format('h:mm:ss')}`);
 			// enviar temperatura y humedad exterior
-			socket.emit('dht22', this.sensor);
+			socket.emit('dht22', self);
 
 			socket.timeOut = setTimeout(function() {
 				sensorObj.read();
-				Sensor.save22(this.sensor);
+				Sensor.save22(self);
 			}, 5000);
 		},
 
