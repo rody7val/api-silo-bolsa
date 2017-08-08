@@ -5,14 +5,14 @@ var Schema = mongoose.Schema;
 
 // Modelo Sensor
 var SensorSchema = new Schema({
-	hr: [Float],
     temp: [Float],
-    prefix: [String],
-    time: Number,
-    vcc: Number,
-    placa: String,
+    hr: [Float],
+    turbine: { type: Number, default: 0 },
     sector: String,
+    placa: String,
+    prefix: [String],
     pin: Number,
+    vcc: Number,
     unix: { type: Number, default: Date.now },
     created: { type: Date, default: Date.now },
 });

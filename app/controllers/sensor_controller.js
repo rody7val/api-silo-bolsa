@@ -37,10 +37,10 @@ var Sensor = require('../models/sensor');
  *
  */
 exports.save = function (req, res) {
+	console.log(req.body);
 	var snsr = new Sensor({
 		temp: req.body.temp || [],
 		hr: req.body.hr || [],
-		time: req.body.time || 0,
 		vcc: req.body.vcc || 0,
 		placa: req.body.placa || '',
 		sector: req.body.sector || '',
@@ -60,6 +60,19 @@ exports.save = function (req, res) {
 	});
 }
 
+
+exports.save22 = function (sr) {
+	var sensor = new Sensor({
+		temp: [sr.data.temperature] || [],
+		hr: [sr.data.humidity] || [],
+		placa: sr.name || '',
+		sector: sr.sector || '',
+		pin: sr.pin || 0,
+		prefix: sr.prefix || ''
+	});
+	
+	sensor.save(function (err, sensor) { console.log(err ? err : sensor) });
+}
 /**
  * @api {get} /sensors Obtener Sensores
  * @apiGroup Sensor

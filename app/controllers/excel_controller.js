@@ -54,11 +54,13 @@ exports.excel_export = function (req, res) {
       { caption: 'Fecha'  , type: 'date' },
       { caption: 'Hora'   , type: 'date' },
       { caption: 'Temp'   , type: 'number' },
-      { caption: 'Vcc'    , type: 'number' },
-      { caption: 'Placa'  , type: 'string' },
+      { caption: 'HR'     , type: 'number' },
+      { caption: 'Turbina', type: 'number' },
       { caption: 'Sector' , type: 'string' },
-      { caption: 'Pin'    , type: 'number' },
+      { caption: 'Placa'  , type: 'string' },
       { caption: 'Prefijo', type: 'string' },
+      { caption: 'Pin'    , type: 'number' },
+      { caption: 'Vcc'    , type: 'number' },
     ];
 
     // Filas
@@ -70,14 +72,16 @@ exports.excel_export = function (req, res) {
       sensor.temp.forEach(function (temp, key) {
         // crear nueva fila
         conf.rows.push([
-          moment.unix( sensor.unix / 1000 ).format('DD-MM-YYYY'),
-          moment.unix( sensor.unix / 1000 ).format('LT'),
-          sensor.temp[key],
-          parseFloat( Number(sensor.vcc / 10000).toFixed(2) ),
-          sensor.placa,
-          sensor.sector,
-          sensor.pin,
-          sensor.prefix[key] || "x"+key
+          moment.unix( sensor.unix / 1000 ).format('DD-MM-YYYY'), // Fecha
+          moment.unix( sensor.unix / 1000 ).format('LT'), // Hora
+          sensor.temp[key], // Temp
+          sensor.hr[key], // HR
+          sensor.turbine, // Turbina
+          sensor.sector,  // Sector
+          sensor.placa, // Placa
+          sensor.prefix[key] || "x"+key, // Prefijo
+          sensor.pin, // Pin
+          parseFloat( Number(sensor.vcc / 10000).toFixed(2) )  // Vcc
         ]);
       });
     });
@@ -85,7 +89,7 @@ exports.excel_export = function (req, res) {
     // Exportar archivo binario *.xlsx
     var result = nodeExcel.execute(conf);
     res.setHeader('Content-Type', 'application/vnd.openxmlformats');
-    res.setHeader('Content-Disposition', 'attachment; filename=' + 'Temperaturas_' + hoy +'.xlsx');
+    res.setHeader('Content-Disposition', 'attachment; filename=' + 'Sensores_' + hoy +'.xlsx');
     res.end(result, 'binary');
   });
 }

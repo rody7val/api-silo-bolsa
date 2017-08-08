@@ -4,6 +4,8 @@ var App = require('../app');
 var ip = require('ip');
 var moment = require('moment');
 
+var Sensor  = require('../app/controllers/sensor_controller');
+
 // socket
 var allClients = [];
 App.io.sockets.on('connection', function (socket) {
@@ -12,17 +14,19 @@ App.io.sockets.on('connection', function (socket) {
 
 	var sensorObj = {
 		sensor: {
-			name: "Exterior",
+			name: 'RASPI',
+			sector: 'EXTERIOR',
 			type: 22,
 			pin: 4,
 			data: {},
 			time: null,
+			prefix: 'EXT'
 		},
 
 		disconnect: function(sk) {
-    	console.log('disconnect!');
-    	var i = allClients.indexOf(sk);
-    	clearTimeout(allClients[i].timeOut)
+			console.log('disconnect!');
+			var i = allClients.indexOf(sk);
+			clearTimeout(allClients[i].timeOut)
 			delete allClients[i];
 		},
 
@@ -35,6 +39,7 @@ App.io.sockets.on('connection', function (socket) {
 
 			socket.timeOut = setTimeout(function() {
 				sensorObj.read();
+				Sensor.save22(this.sensor);
 			}, 5000);
 		},
 
@@ -55,7 +60,7 @@ App.io.sockets.on('connection', function (socket) {
 
 	socket.on('disconnect', function() {
 		sensorObj.disconnect(socket);
-  });
+	});
 
 	sensorObj.start();
 	sensorObj.stop();
@@ -63,7 +68,7 @@ App.io.sockets.on('connection', function (socket) {
 
 // server
 App.server.listen(config.port, function (err) {
-  if (err) return console.log(err);
+	if (err) return console.log(err);
 	var protocol = 'http://';
 	console.log('####');
 	console.log(`Servidor local: ${protocol}localhost:${config.port}`);
