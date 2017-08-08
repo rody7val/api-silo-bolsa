@@ -3,8 +3,32 @@ var config = require('../config');
 var App = require('../app');
 var ip = require('ip');
 var moment = require('moment');
+var Sensor = require('../app/controllers/sensor_controller');
 
-var Sensor  = require('../app/controllers/sensor_controller');
+// Guardar temp y hr cada 30 seg
+var timeOut = null;
+var sensorController = {
+	sensor: {
+		name: 'RASPI',
+		sector: 'EXTERIOR',
+		type: 22,
+		pin: 4,
+		data: {},
+		time: null,
+		prefix: 'EXT'
+	},
+	read: function () {
+		var sr = this.sensor;
+		sr.data = sensorLib.read(sr.type, sr.pin);
+		sr.time = moment().unix();
+
+		timeOut = setTimeout(function() {
+			sensorController.read();
+			Sensor.save22(sr);
+		}, 30 * 1000);
+	}
+};
+sensorController.read();
 
 // socket
 var allClients = [];
@@ -41,8 +65,7 @@ App.io.sockets.on('connection', function (socket) {
 
 			socket.timeOut = setTimeout(function() {
 				sensorObj.read();
-				Sensor.save22(sensor);
-			}, 5000);
+			}, 5 * 1000);
 		},
 
 		start: function() {
