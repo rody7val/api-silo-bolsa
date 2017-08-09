@@ -59,20 +59,6 @@ exports.save = function (req, res) {
 	});
 }
 
-
-exports.save22 = function (sr) {
-
-	var sensor = new Sensor({
-		temp: [sr.data.temperature] || [],
-		hr: [sr.data.humidity] || [],
-		placa: sr.name || '',
-		sector: sr.sector || '',
-		pin: sr.pin || 0,
-		prefix: sr.prefix || ''
-	});
-	
-	sensor.save(function (err, sensor) { console.log(err ? err : sensor._id) });
-}
 /**
  * @api {get} /sensors Obtener Sensores
  * @apiGroup Sensor
@@ -136,3 +122,17 @@ exports.all = function (req, res) {
 		})
 	})
 }
+
+// exports.save22 = function (sr) {
+
+// 	var sensor = new Sensor({
+// 		temp: [sr.data.temperature] || [],
+// 		hr: [sr.data.humidity] || [],
+// 		placa: sr.name || '',
+// 		sector: sr.sector || '',
+// 		pin: sr.pin || 0,
+// 		prefix: sr.prefix || ''
+// 	});
+
+// 	sensor.save(function (err, sensor) { console.log(err ? err : sensor._id) });
+// }

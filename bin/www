@@ -1,95 +1,68 @@
-var sensorLib = require('node-dht-sensor');
 var config = require('../config');
 var App = require('../app');
 var ip = require('ip');
 var moment = require('moment');
-var Sensor = require('../app/controllers/sensor_controller');
-
-// Guardar temp y hr cada 30 seg
-var timeOut = null;
-var sensorController = {
-	sensor: {
-		name: 'RASPI',
-		sector: 'EXTERIOR',
-		type: 22,
-		pin: 4,
-		data: {},
-		time: null,
-		prefix: 'EXT'
-	},
-	read: function () {
-		var sr = this.sensor;
-		sr.data = sensorLib.read(sr.type, sr.pin);
-		sr.time = moment().unix();
-
-		timeOut = setTimeout(function() {
-			sensorController.read();
-			Sensor.save22(sr);
-		}, 30 * 1000);
-	}
-};
-sensorController.read();
 
 // socket
-var allClients = [];
-App.io.sockets.on('connection', function (socket) {
-	socket.timeOut = null;
-	allClients.push(socket);
+// var allClients = [];
+// App.io.sockets.on('connection', function (socket) {
+// 	socket.timeOut = null;
+// 	allClients.push(socket);
 
-	var sensorObj = {
-		sensor: {
-			name: 'RASPI',
-			sector: 'EXTERIOR',
-			type: 22,
-			pin: 4,
-			data: {},
-			time: null,
-			prefix: 'EXT'
-		},
+// 	var sensorObj = {
+// 		sensor: {
+// 			name: 'RASPI',
+// 			sector: 'EXTERIOR',
+// 			type: 22,
+// 			pin: 4,
+// 			data: {},
+// 			time: null,
+// 			prefix: 'EXT'
+// 		},
 
-		disconnect: function(sk) {
-			console.log('disconnect!');
-			var i = allClients.indexOf(sk);
-			clearTimeout(allClients[i].timeOut)
-			delete allClients[i];
-		},
+// 		disconnect: function(sk) {
+// 			console.log('disconnect!');
+// 			var i = allClients.indexOf(sk);
+// 			clearTimeout(allClients[i].timeOut)
+// 			delete allClients[i];
+// 		},
 
-		read: function() {
-			var sensor = this.sensor;
+// 		read: function() {
+// 			var sensor = this.sensor;
 
-			sensor.data = sensorLib.read(sensor.type, sensor.pin);
-			sensor.time = moment().unix();
-			console.log(`${sensor.name}: ${sensor.data.temperature.toFixed(1)}°C, ${sensor.data.humidity.toFixed(1)}%, ${moment.unix(sensor.time).format('h:mm:ss')}`);
-			// enviar temperatura y humedad exterior
-			socket.emit('dht22', sensor);
+// 			sensor.data = sensorLib.read(sensor.type, sensor.pin);
+// 			sensor.time = moment().unix();
+// 			console.log(`${sensor.name}: ${sensor.data.temperature.toFixed(1)}°C, ${sensor.data.humidity.toFixed(1)}%, ${moment.unix(sensor.time).format('h:mm:ss')}`);
+// 			// enviar temperatura y humedad exterior
+// 			socket.emit('dht22', sensor);
 
-			socket.timeOut = setTimeout(function() {
-				sensorObj.read();
-			}, 5 * 1000);
-		},
+// 			socket.timeOut = setTimeout(function() {
+// 				sensorObj.read();
+// 			}, 5 * 1000);
+// 		},
 
-		start: function() {
-			socket.on('start-dht22', function() {
-				console.log('start!')
-				sensorObj.read();
-			});
-		},
+// 		start: function() {
+// 			socket.on('start-dht22', function() {
+// 				console.log('start!')
+// 				sensorObj.read();
+// 			});
+// 		},
 
-		stop: function() {
-			socket.on('stop-dht22', function() {
-				console.log('stop!')
-				this.disconnect(socket);
-			});
-		}
-	};
+// 		stop: function() {
+// 			socket.on('stop-dht22', function() {
+// 				console.log('stop!')
+// 				this.disconnect(socket);
+// 			});
+// 		}
+// 	};
 
-	socket.on('disconnect', function() {
-		sensorObj.disconnect(socket);
-	});
+// 	socket.on('disconnect', function() {
+// 		sensorObj.disconnect(socket);
+// 	});
 
-	sensorObj.start();
-	sensorObj.stop();
-});
+// 	sensorObj.start();
+// 	sensorObj.stop();
+// });
 
 // server
 App.server.listen(config.port, function (err) {
