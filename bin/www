@@ -5,6 +5,7 @@ var moment = require('moment');
 
 var Sensor = require('../app/controllers/sensor_controller');
 
+// socket
 var allClients = [];
 App.io.sockets.on('connection', function (socket) {
 	socket.timeOut = null;
@@ -36,8 +37,8 @@ App.io.sockets.on('connection', function (socket) {
 			// console.log(`${sensor.name}: ${sensor.data.temperature.toFixed(1)}°C, ${sensor.data.humidity.toFixed(1)}%, ${moment.unix(sensor.time).format('h:mm:ss')}`);
 			// enviar temperatura y humedad exterior
 			var sensor = Sensor.getLastBySector('EXTERIOR');
-			console.log('frnt', sensor);
-			socket.emit('dht22', sensor);
+			console.log(sensor.success ? sensor.data : sensor.err);
+			socket.emit('dht22', sensor.data);
 
 			socket.timeOut = setTimeout(function() {
 				sensorObj.read();

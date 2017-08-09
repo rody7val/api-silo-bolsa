@@ -128,10 +128,10 @@ exports.getLastBySector = function (sector) {
 	Sensor.findOne({ sector: sector })
 	.sort({ created: -1 })
 	.exec(function (err, sensor) {
-		if (err || !sensor || !sensor.length) return false;
+		if (err) return {success: false, err: err};
 
 		console.log('ctrl', sensor);
-		return sensor;
+		return {success: true, data: sensor};
 	});
 
 }
