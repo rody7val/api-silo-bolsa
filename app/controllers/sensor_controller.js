@@ -123,16 +123,15 @@ exports.all = function (req, res) {
 	})
 }
 
-// exports.save22 = function (sr) {
+exports.getLastBySector = function (sector) {
 
-// 	var sensor = new Sensor({
-// 		temp: [sr.data.temperature] || [],
-// 		hr: [sr.data.humidity] || [],
-// 		placa: sr.name || '',
-// 		sector: sr.sector || '',
-// 		pin: sr.pin || 0,
-// 		prefix: sr.prefix || ''
-// 	});
+	Sensor.findOne({ sector: sector })
+	.sort({ created: -1 })
+	.exec(function (err, sensor) {
+		if (err || !sensor || !sensor.length) return false;
 
-// 	sensor.save(function (err, sensor) { console.log(err ? err : sensor._id) });
-// }
+		console.log('ctrl', sensor);
+		return sensor;
+	});
+
+}

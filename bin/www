@@ -3,66 +3,69 @@ var App = require('../app');
 var ip = require('ip');
 var moment = require('moment');
 
-// socket
-// var allClients = [];
-// App.io.sockets.on('connection', function (socket) {
-// 	socket.timeOut = null;
-// 	allClients.push(socket);
+var Sensor = require('../app/controllers/sensor_controller');
 
-// 	var sensorObj = {
-// 		sensor: {
-// 			name: 'RASPI',
-// 			sector: 'EXTERIOR',
-// 			type: 22,
-// 			pin: 4,
-// 			data: {},
-// 			time: null,
-// 			prefix: 'EXT'
-// 		},
+var allClients = [];
+App.io.sockets.on('connection', function (socket) {
+	socket.timeOut = null;
+	allClients.push(socket);
 
-// 		disconnect: function(sk) {
-// 			console.log('disconnect!');
-// 			var i = allClients.indexOf(sk);
-// 			clearTimeout(allClients[i].timeOut)
-// 			delete allClients[i];
-// 		},
+	var sensorObj = {
+		// sensor: {
+		// 	name: 'RASPI',
+		// 	sector: 'EXTERIOR',
+		// 	type: 22,
+		// 	pin: 4,
+		// 	data: {},
+		// 	time: null,
+		// 	prefix: 'EXT'
+		// },
 
-// 		read: function() {
-// 			var sensor = this.sensor;
+		disconnect: function(sk) {
+			console.log('disconnect!');
+			var i = allClients.indexOf(sk);
+			clearTimeout(allClients[i].timeOut)
+			delete allClients[i];
+		},
 
-// 			sensor.data = sensorLib.read(sensor.type, sensor.pin);
-// 			sensor.time = moment().unix();
-// 			console.log(`${sensor.name}: ${sensor.data.temperature.toFixed(1)}°C, ${sensor.data.humidity.toFixed(1)}%, ${moment.unix(sensor.time).format('h:mm:ss')}`);
-// 			// enviar temperatura y humedad exterior
-// 			socket.emit('dht22', sensor);
+		read: function() {
+			// var sensor = this.sensor;
 
-// 			socket.timeOut = setTimeout(function() {
-// 				sensorObj.read();
-// 			}, 5 * 1000);
-// 		},
+			// sensor.data = sensorLib.read(sensor.type, sensor.pin);
+			// sensor.time = moment().unix();
+			// console.log(`${sensor.name}: ${sensor.data.temperature.toFixed(1)}°C, ${sensor.data.humidity.toFixed(1)}%, ${moment.unix(sensor.time).format('h:mm:ss')}`);
+			// enviar temperatura y humedad exterior
+			var sensor = Sensor.getLastBySector('EXTERIOR');
+			console.log('frnt', sensor);
+			socket.emit('dht22', sensor);
 
-// 		start: function() {
-// 			socket.on('start-dht22', function() {
-// 				console.log('start!')
-// 				sensorObj.read();
-// 			});
-// 		},
+			socket.timeOut = setTimeout(function() {
+				sensorObj.read();
+			}, 30 * 1000);
+		},
 
-// 		stop: function() {
-// 			socket.on('stop-dht22', function() {
-// 				console.log('stop!')
-// 				this.disconnect(socket);
-// 			});
-// 		}
-// 	};
+		start: function() {
+			socket.on('start-dht22', function() {
+				console.log('start!')
+				sensorObj.read();
+			});
+		},
 
-// 	socket.on('disconnect', function() {
-// 		sensorObj.disconnect(socket);
-// 	});
+		stop: function() {
+			socket.on('stop-dht22', function() {
+				console.log('stop!')
+				this.disconnect(socket);
+			});
+		}
+	};
 
-// 	sensorObj.start();
-// 	sensorObj.stop();
-// });
+	socket.on('disconnect', function() {
+		sensorObj.disconnect(socket);
+	});
+
+	sensorObj.start();
+	sensorObj.stop();
+});
 
 // server
 App.server.listen(config.port, function (err) {
