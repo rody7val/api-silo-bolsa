@@ -124,14 +124,25 @@ exports.all = function (req, res) {
 }
 
 exports.getLastBySector = function (sector) {
+	console.log(sector);
+
+	err = false;
+	sr = null;
 
 	Sensor.findOne({ sector: sector })
-	.sort({ created: -1 })
 	.exec(function (err, sensor) {
-		if (err) return {success: false, err: err};
+		if (err) {
+			err = err;
+			return;
+		}
 
 		console.log('ctrl', sensor);
-		return {success: true, data: sensor};
+		sr = sensor;
 	});
 
+	if (err) {
+		return {success: false, err: err};
+	}
+
+	return {success: true, data: sr};
 }
